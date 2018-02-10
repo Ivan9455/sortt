@@ -1,4 +1,3 @@
-import com.sun.org.apache.xpath.internal.SourceTree;
 
 import java.io.*;
 
@@ -6,27 +5,29 @@ import java.io.*;
 public class Main {
     private static int line = 0;
 
-
     public static void main(String[] args) throws IOException {
 
-        String pathin = "./file/";
-        String path = "./";
-        String[] arr = {path + "in.txt", path + "out.txt", "-i", "-d"};
         BufferedReader buf = null;
         BufferedReader buf2 = null;
         Sorts sorts = new Sorts();
         String[] text = new String[200];
         String str;
+
         Err err = new Err();
-        err.errArgs(arr.length);//количество аргументов
-        err.errFile(arr[0]); //существует файл 1
-        err.typeFile(arr[0], text, line, arr[2]); //тип читаемого файла(можно ли преобразовать)
-        err.typeSort(arr[3]);//тип сортировки
+        try {
+            err.errArgs(args.length);//количество аргументов
+            err.errFile(args[0]); //существует файл 1
+            err.typeFile(args[0], text, line, args[2]); //тип читаемого файла(можно ли преобразовать)
+            err.typeSort(args[3]);//тип сортировки
+        }
+        catch (Exception e){
+
+        }
         if (err.getError().equals("")) {
-            if (err.errFiles(arr[0], arr[1])) err.setError("Внимание файл " + arr[0] + " будет перезаписан!");
+            if (err.errFiles(args[0], args[1])) err.setError("Внимание файл " + args[0] + " будет перезаписан!");
             try {
-                buf = new BufferedReader(new InputStreamReader(new FileInputStream(arr[0]), "UTF-8"));
-                buf2 = new BufferedReader(new InputStreamReader(new FileInputStream(arr[1]), "UTF-8"));
+                buf = new BufferedReader(new InputStreamReader(new FileInputStream(args[0])));
+                buf2 = new BufferedReader(new InputStreamReader(new FileInputStream(args[1])));
             }catch (Exception e){
 
             }
@@ -37,16 +38,16 @@ public class Main {
                 line++;
             }
 
-            switch (arr[2]) {
+            switch (args[2]) {
                 case "-i":
                     int[] textI = new int[line];
                     for (int i = 0; i < textI.length; i++) {
                         textI[i] = Integer.parseInt(text[i]);
                     }
-                    switch (arr[3]) {
+                    switch (args[3]) {
                         case "-a":
                             try {
-                                FileWriter newFile = new FileWriter(arr[1]);
+                                FileWriter newFile = new FileWriter(args[1]);
                                 textI = sorts.sortIA(textI);
                                 for (int i = 0; i < textI.length; i++) {
                                     newFile.write(String.valueOf(textI[i]) + "\r\n");
@@ -60,7 +61,7 @@ public class Main {
                             break;
                         case "-d":
                             try {
-                                FileWriter newFile = new FileWriter(arr[1]);
+                                FileWriter newFile = new FileWriter(args[1]);
                                 textI = sorts.sortIB(textI);
                                 for (int i = 0; i < textI.length; i++) {
                                     newFile.write(String.valueOf(textI[i]) + "\r\n");
@@ -82,10 +83,10 @@ public class Main {
                     for (int i = 0; i < textS.length; i++) {
                         textS[i] = text[i];
                     }
-                    switch (arr[3]) {
+                    switch (args[3]) {
                         case "-a":
                             try {
-                                FileWriter newFile = new FileWriter(arr[1]);
+                                FileWriter newFile = new FileWriter(args[1]);
                                 textS = sorts.sortSA(textS);
                                 for (int i = 0; i < textS.length; i++) {
                                     newFile.write(String.valueOf(textS[i]) + "\r\n");
@@ -99,7 +100,7 @@ public class Main {
                             break;
                         case "-d":
                             try {
-                                FileWriter newFile = new FileWriter(arr[1]);
+                                FileWriter newFile = new FileWriter(args[1]);
                                 textS = sorts.sortSB(textS);
                                 for (int i = 0; i < textS.length; i++) {
                                     newFile.write(String.valueOf(textS[i]) + "\r\n");
