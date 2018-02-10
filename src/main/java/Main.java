@@ -21,7 +21,7 @@ public class Main {
             err.typeSort(args[3]);//тип сортировки
         }
         catch (Exception e){
-
+            e.printStackTrace();
         }
         if (err.getError().equals("")) {
             if (err.errFiles(args[0], args[1])) err.setError("Внимание файл " + args[0] + " будет перезаписан!");
@@ -29,7 +29,7 @@ public class Main {
                 buf = new BufferedReader(new InputStreamReader(new FileInputStream(args[0])));
                 buf2 = new BufferedReader(new InputStreamReader(new FileInputStream(args[1])));
             }catch (Exception e){
-
+                e.printStackTrace();
             }
 
 
